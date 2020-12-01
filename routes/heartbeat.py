@@ -1,13 +1,19 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 heartbeat = APIRouter()
 from starlette.responses import JSONResponse
 
 
-@heartbeat.get("/")
-async def heart_beat():
+class Health(BaseModel):
+	status: str = "success"
+
+
+@heartbeat.get("/", response_model=Health)
+@heartbeat.post("/", response_model=Health)
+def health_check():
 	"""
 	
-	:return:
+	:return: json string
 	"""
-	return JSONResponse({"status": "ok"}, status_code=200)
+	return JSONResponse({"status": "success"}, status_code=200)

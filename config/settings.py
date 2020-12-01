@@ -14,6 +14,7 @@ class Config(object):
 	ALGORITHM = os.getenv('ALGORITHM', 'HS256')
 	ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_MINUTES', 43200)  # 30 days
 	API_DOCS_URL = True  # url => <domair>/docs/
+	ALLOW_ORIGIN = ['*']
 
 
 class DevConfig(Config):

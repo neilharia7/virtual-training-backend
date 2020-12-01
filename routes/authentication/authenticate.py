@@ -1,29 +1,30 @@
-import base64
 from datetime import timedelta
 
 from fastapi import APIRouter
 from fastapi import Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from starlette.responses import Response, JSONResponse
 
 from config.settings import current_config
 from src.data.information import fake_users_db
 from src.functions.auth_utils import authenticate_user
 from src.functions.auth_utils import create_access_token
-from src.security.auth import basic_auth, BasicAuth
 
 auth_router = APIRouter()
 
+security = HTTPBasic()
+
 
 @auth_router.post("/login")
-async def login(auth: BasicAuth = Depends(basic_auth)):
+def login(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
 	if not auth:
 		response = Response(headers={"WWW-Authenticate": "Basic"}, status_code=401)
 		return response
 	
+	print(f'auth {auth}')
 	try:
-		decoded = base64.b64decode(auth).decode("ascii")
-		username, _, password = decoded.partition(":")
+		username, password = auth.username, auth.password
 		user = authenticate_user(fake_users_db, username, password)
 		if not user:
 			raise HTTPException(status_code=400, detail="Incorrect email or password")
