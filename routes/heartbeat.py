@@ -6,7 +6,7 @@ from starlette.responses import JSONResponse
 
 
 class Health(BaseModel):
-	status: str = "success"
+	success: bool = True
 
 
 @heartbeat.get("/", response_model=Health)
@@ -16,4 +16,4 @@ def health_check():
 	
 	:return: json string
 	"""
-	return JSONResponse({"status": "success"}, status_code=200)
+	return JSONResponse({"success": True}, status_code=200)

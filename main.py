@@ -24,7 +24,7 @@ def create_app():
 	from routes.authentication.authenticate import auth_router
 	from routes.heartbeat import heartbeat
 	
-	app.include_router(auth_router, prefix='/auth')
+	app.include_router(auth_router, tags=['Authenticate'], prefix='/auth')
 	app.include_router(heartbeat, tags=['Health'])
 	
 	return app

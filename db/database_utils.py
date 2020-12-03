@@ -36,8 +36,8 @@ def initiate_query(query):
 	except Exception as e:
 		print(f"query exception {e}")
 		traceback.print_exc()
-		response['success'] = False
-		return response
+		raise Exception(f"{e}")
+	
 	finally:
 		conn.commit()
 		cur.close()

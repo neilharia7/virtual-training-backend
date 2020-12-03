@@ -19,6 +19,7 @@ class Config(object):
 	DATABASE_NAME = "training_db"
 	USERNAME = "vtp_training"
 	PASSWORD = "15272b0ba39b474b8baeb7177f3e26bd"
+	MODES = ["employee", "mentor"]
 
 
 class DevConfig(Config):
