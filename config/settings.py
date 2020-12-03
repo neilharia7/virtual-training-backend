@@ -15,6 +15,10 @@ class Config(object):
 	ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_MINUTES', 43200)  # 30 days
 	API_DOCS_URL = True  # url => <domair>/docs/
 	ALLOW_ORIGIN = ['*']
+	DATABASE_SERVER = "testserver.crhcifgoezvo.ap-south-1.rds.amazonaws.com"
+	DATABASE_NAME = "training_db"
+	USERNAME = "vtp_training"
+	PASSWORD = "15272b0ba39b474b8baeb7177f3e26bd"
 
 
 class DevConfig(Config):

@@ -4,7 +4,8 @@ import jwt
 from passlib.context import CryptContext
 
 from config.settings import current_config
-from src.models.db import UserInDB
+from db.database_utils import initiate_query
+from src.models.db import EmployeeInDB
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -20,31 +21,34 @@ def verify_password(plain_password, hashed_password) -> bool:
 	return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_user(db, username: str):
+def get_user(username: str):
 	"""
 	
-	:param db:
 	:param username:
 	:return:
 	"""
-	if username in db:
-		user_dict = db[username]
-		return UserInDB(**user_dict)
+	
+	response = initiate_query(f"call get_details_from_username_or_email('{username}')")
+	
+	if response['success']:
+		user_details = response['data']
+		return EmployeeInDB(**user_details)
 
 
-def authenticate_user(fake_db, username: str, password: str):
+def authenticate_user(username: str, password: str):
 	"""
 	
-	:param fake_db:
 	:param username:
 	:param password:
 	:return:
 	"""
-	user = get_user(fake_db, username)
+	
+	user = get_user(username)
 	if not user:
 		return False
-	if not verify_password(password, user.hashed_password):
+	if not verify_password(password, user.password):
 		return False
+	
 	return user
 
 

@@ -1,5 +1,5 @@
-from src.models.user import User
+from src.models.employee import Employee
 
 
-class UserInDB(User):
-	hashed_password: str
+class EmployeeInDB(Employee):
+	password: str

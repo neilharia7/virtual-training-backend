@@ -9,6 +9,7 @@ passlib==1.7.4
 pycparser==2.20
 pydantic==1.7.2
 PyJWT==1.6.1
+PyMySQL==0.10.1
 python-multipart==0.0.5
 six==1.15.0
 starlette==0.13.6

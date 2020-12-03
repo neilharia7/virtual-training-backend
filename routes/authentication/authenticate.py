@@ -7,7 +7,6 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from starlette.responses import Response, JSONResponse
 
 from config.settings import current_config
-from src.data.information import fake_users_db
 from src.functions.auth_utils import authenticate_user
 from src.functions.auth_utils import create_access_token
 
@@ -25,7 +24,7 @@ def login(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
 	print(f'auth {auth}')
 	try:
 		username, password = auth.username, auth.password
-		user = authenticate_user(fake_users_db, username, password)
+		user = authenticate_user(username, password)
 		if not user:
 			raise HTTPException(status_code=400, detail="Incorrect email or password")
 		
