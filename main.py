@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from config.settings import current_config, PORT
+from config.settings import current_config, HOST, PORT
 
 
 def create_app():
@@ -40,4 +40,4 @@ def create_app():
 application = create_app()
 
 if __name__ == "__main__":
-	uvicorn.run(application, port=PORT)
+	uvicorn.run(application, host=HOST, port=PORT)

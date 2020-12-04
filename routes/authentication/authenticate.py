@@ -40,7 +40,7 @@ async def register(mode, details: Register):
 	else:
 		password = pwd_context.hash(details.password)
 		initiate_query(
-			f"call '{query_mode}'('{details.name}', '{details.username}', '{password}', '{details.email}')")
+			f"call {query_mode}('{details.name}', '{details.username}', '{password}', '{details.email}')")
 		
 		return JSONResponse({"success": True, "message": "registered successfully"}, status_code=200)
 
