@@ -5,8 +5,7 @@ from starlette.responses import Response, JSONResponse
 
 from config.settings import current_config
 from db.database_utils import initiate_query
-from src.functions.auth_utils import authenticate_user, get_user, create_token
-from src.models.db import Employee, Mentor
+from src.functions.auth_utils import authenticate_user, get_user, create_token, pwd_context
 from src.models.register import Register
 
 auth_router = APIRouter()
@@ -31,7 +30,6 @@ async def register(mode, details: Register):
 		user_details = get_user(details.username, details.email, mode)
 	
 	query_mode = "insert_employee_details" if mode == current_config.MODES[0] else "insert_mentor_details"
-	name = user_details.employee_name if mode == current_config.MODES[0] else user_details.mentor_name
 	
 	if mode not in current_config.MODES:
 		return JSONResponse({"success": False, "message": "Invalid mode"}, status_code=406)
@@ -40,67 +38,35 @@ async def register(mode, details: Register):
 		return JSONResponse({"success": False, "message": "username or email id already exists"}, status_code=406)
 	
 	else:
+		password = pwd_context.hash(details.password)
 		initiate_query(
-			f"call '{query_mode}'('{name}', '{user_details.username}', '{user_details.password}', '{user_details.email}')")
+			f"call '{query_mode}'('{details.name}', '{details.username}', '{password}', '{details.email}')")
 		
 		return JSONResponse({"success": True, "message": "registered successfully"}, status_code=200)
 
 
-@auth_router.post("/employee/login", response_model=Employee)
+@auth_router.post("/login")
 def login(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
 	"""
 	
 	:param auth:
 	:return:
 	"""
+	
 	if not auth:
 		response = Response(headers={"WWW-Authenticate": "Basic"}, status_code=401)
 		return response
 	
 	try:
-		username, password = auth.username, auth.password
-		user = authenticate_user(username, password)
 		
-		if not user:
-			raise HTTPException(status_code=400, detail="Incorrect email or password")
-		
-		user_details = user.__dict__
-		user_details['success'] = True
-		
-		response = JSONResponse(user_details, status_code=200)
-		response.set_cookie(
-			"Authorization",
-			value=f"Bearer {create_token(username=username)}",
-			# domain="localtest.me",
-			httponly=True,
-			max_age=current_config.ACCESS_TOKEN_EXPIRE_MINUTES,
-			expires=current_config.ACCESS_TOKEN_EXPIRE_MINUTES,
-		)
-		return response
-	
-	except HTTPException as e:
-		print(f"error > {e.detail}")
-		response = JSONResponse({"success": False, "message": e.detail}, status_code=401)
-		return response
-
-
-@auth_router.post("/mentor/login", response_model=Mentor)
-def login(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
-	"""
-
-	:param auth:
-	:return:
-	"""
-	if not auth:
-		response = Response(headers={"WWW-Authenticate": "Basic"}, status_code=401)
-		return response
-	
-	try:
 		username, password = auth.username, auth.password
 		user = authenticate_user(username, password, current_config.MODES[1])
 		
 		if not user:
-			raise HTTPException(status_code=400, detail="Incorrect email or password")
+			user = authenticate_user(username, password, current_config.MODES[0])
+			
+			if not user:
+				raise HTTPException(status_code=400, detail="Incorrect email or password")
 		
 		user_details = user.__dict__
 		user_details['success'] = True

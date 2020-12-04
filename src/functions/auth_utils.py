@@ -13,7 +13,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password) -> bool:
 	"""
-	checks whether the hash of `plain_password` matches with the `hashed_password
+	checks whether the hash of `plain_password` matches with the `hashed_password`
 	
 	:param plain_password:
 	:param hashed_password:
@@ -30,17 +30,17 @@ def get_user(username: str, email: str = '', mode: str = current_config.MODES[0]
 	:param mode:
 	:return:
 	"""
-	
+	print(username, email, mode)
 	if mode == current_config.MODES[0]:
 		response = initiate_query(f"call get_emp_details_from_username_or_email('{username}', '{email}')")
 		
-		user_details = response['data']
-		return EmployeeInDB(**user_details)
+		if response['data']:
+			return EmployeeInDB(**response['data'])
 	else:
-		response = initiate_query(f"get_mentor_details_from_username_or_email('{username}', '{email}')")
+		response = initiate_query(f"call get_mentor_details_from_username_or_email('{username}', '{email}')")
 		
-		mentor_details = response['data']
-		return MentorInDB(**mentor_details)
+		if response['data']:
+			return MentorInDB(**response['data'])
 
 
 def authenticate_user(username: str, password: str, mode: str = current_config.MODES[0]):

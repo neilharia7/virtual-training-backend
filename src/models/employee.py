@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Employee(BaseModel):
-	employee_name: str
+	name: str
 	username: str
 	email_id: str = None
 	skills: list = None

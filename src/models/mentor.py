@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Mentor(BaseModel):
-	mentor_name: str
+	name: str
 	username: str
 	email_id: str = None
 	active_status: bool = None

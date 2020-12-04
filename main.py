@@ -10,7 +10,12 @@ def create_app():
 	
 	:return:
 	"""
-	app = FastAPI()
+	app = FastAPI(
+		title="Virtual Training Platform",
+		description="""Industry focused courses where employees can track their progress,
+		have Q&A sessions with mentors and improve their skill-set. Mentors can track individual’s performance,
+		overall ranking and use the same to recommend respective project managers in the organization"""
+	)
 	app.add_middleware(
 		CORSMiddleware,
 		allow_origins=current_config.ALLOW_ORIGIN,
@@ -23,8 +28,10 @@ def create_app():
 	
 	from routes.authentication.authenticate import auth_router
 	from routes.heartbeat import heartbeat
+	from routes.courses.course import course_router
 	
 	app.include_router(auth_router, tags=['Authenticate'], prefix='/auth')
+	app.include_router(course_router, tags=['Course'], prefix='/courses')
 	app.include_router(heartbeat, tags=['Health'])
 	
 	return app
