@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>{{title}}</title>
+    <!-- <script src="scormify.js" type="text/javascript"></script> -->
+    <link href="css/demo.css" rel="stylesheet" type="text/css"/>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="css/animate.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <script src="js/pace.min.js"></script>
+    <style>
+        ul {
+            list-style: none outside none;
+            padding-left: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="content">
+    {{{slides}}}
+</div>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/zenith.js"></script>
+<script type="text/javascript">
+    function preloadImages(urls, allImagesLoadedCallback) {
+        var loadedCounter = 0;
+        var toBeLoadedNumber = urls.length;
+        urls.forEach(function (url) {
+            preloadImage(url, function () {
+                loadedCounter++;
+                console.log('Number of loaded images: ' + loadedCounter);
+                if (loadedCounter == toBeLoadedNumber) {
+                    allImagesLoadedCallback();
+                }
+            });
+        });
+
+        function preloadImage(url, anImageLoadedCallback) {
+            var img = new Image();
+            img.onload = anImageLoadedCallback;
+            img.src = url;
+        }
+    }
+
+    $(document).ready(function () {
+        preloadImages({;
+        {
+            {
+                images
+            }
+        }
+    },
+
+        function () {
+            console.log('All images were loaded');
+            $('#third').zenith({
+                layout: 'slider',
+                width: '100%',
+                height: '600px',
+                autoplay: false,
+                autoplaySpeed: 9929399,
+                slideSpeed: 600,
+                style: 'shadow',
+                customNavs: ['#tf_thumbs', '.tf_thumb'],
+                navPosition: 'right',
+                direction: 'vertical'
+            });
+        }
+
+    )
+    });
+</script>
+
+</body>
+</html>

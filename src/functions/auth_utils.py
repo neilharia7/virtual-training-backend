@@ -11,7 +11,7 @@ from src.models.db import EmployeeInDB, MentorInDB
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def verify_password(plain_password, hashed_password) -> bool:
+def verify_password(plain_password: str, hashed_password: str) -> bool:
 	"""
 	checks whether the hash of `plain_password` matches with the `hashed_password`
 	

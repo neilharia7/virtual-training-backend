@@ -9,7 +9,6 @@ from src.functions.auth_utils import authenticate_user, get_user, create_token, 
 from src.models.register import Register
 
 auth_router = APIRouter()
-
 security = HTTPBasic()
 
 
