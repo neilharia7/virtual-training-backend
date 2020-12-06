@@ -131,3 +131,8 @@ dmypy.json
 .pyre/
 
 .idea/
+
+*.pdf
+course_data/
+courses/
+

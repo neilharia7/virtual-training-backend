@@ -54,7 +54,6 @@ def get_courses():
 	
 	return course_details()
 
-
 @course_router.post('/upload')
 def upload_course(file: UploadFile = File(...)):
 	"""
@@ -66,3 +65,10 @@ def upload_course(file: UploadFile = File(...)):
 	upload_file_to_s3(file)
 	
 	return {"success": True}
+# =======
+	
+# 	with open(f'{os.getcwd()}/.{file.filename.split(".")[-1]}', 'wb') as buffer:
+# 		shutil.copyfileobj(file.file, buffer)
+	
+# 	return {"success": True}
+# >>>>>>> Stashed changes
