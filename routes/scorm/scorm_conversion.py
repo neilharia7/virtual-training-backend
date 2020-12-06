@@ -15,9 +15,11 @@ def convert_ppt_to_images():
 	"""
 	
 	# hardcoded for now
+	print(f'libreoffice --headless --convert-to pdf {os.getcwd()}/course_data/Clustering.pptx')
 	os.system(f'libreoffice --headless --convert-to pdf {os.getcwd()}/course_data/Clustering.pptx')
 	
-	os.system(f'convert -density 400 -resize 3000^ {os.getcwd()}/course_data/cluster%d.jpg')
+	print(f'convert -density 400 -resize 3000^ {os.getcwd()}/course_data/Clustering.pptx {os.getcwd()}/course_data/cluster%d.jpg')
+	os.system(f'convert -density 400 -resize 3000^ {os.getcwd()}/course_data/Clustering.pptx {os.getcwd()}/course_data/cluster%d.jpg')
 	
 	return {"success": True}
 
