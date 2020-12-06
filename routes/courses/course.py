@@ -9,15 +9,15 @@ from src.functions.utils import DatetimeEncoder
 course_router = APIRouter()
 
 
-def course_details(mentor_id: int = None):
+def course_details(course_id: int = None):
 	"""
 	
-	:param mentor_id:
+	:param course_id:
 	:return:
 	"""
 	
-	if mentor_id:
-		courses = initiate_query(f"call get_courses_from_mentor('{mentor_id}')")
+	if course_id:
+		courses = initiate_query(f"call get_course_details('{course_id}')")
 	else:
 		courses = initiate_query("call get_courses()")
 	
@@ -30,15 +30,15 @@ def course_details(mentor_id: int = None):
 		status_code=200)
 
 
-@course_router.get('/{mentor_id}')
-def get_courses_by_mentor(mentor_id):
+@course_router.get('/{course_id}')
+def get_course_details(course_id):
 	"""
 	
 	:return:
 	"""
 	try:
-		mentor_id = int(mentor_id)
-		return course_details(mentor_id=mentor_id)
+		course_id = int(course_id)
+		return course_details(course_id=course_id)
 	except ValueError as e:
 		print(f'error >> {e}')
 		return JSONResponse({"success": False, "message": "invalid mentor id"}, status_code=400)
@@ -52,3 +52,8 @@ def get_courses():
 	"""
 	
 	return course_details()
+
+
+@course_router.post('/upload')
+def upload_course():
+	pass
