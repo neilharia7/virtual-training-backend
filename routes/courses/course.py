@@ -1,8 +1,9 @@
 import json
 
-from fastapi import APIRouter
+from fastapi import APIRouter, File, UploadFile
 from starlette.responses import JSONResponse
 
+from aws.s3_functions import upload_file_to_s3
 from db.database_utils import initiate_query
 from src.functions.utils import DatetimeEncoder
 
@@ -55,5 +56,13 @@ def get_courses():
 
 
 @course_router.post('/upload')
-def upload_course():
-	pass
+def upload_course(file: UploadFile = File(...)):
+	"""
+	
+	:return:
+	"""
+	
+	print(f'filename {file.filename}')
+	upload_file_to_s3(file)
+	
+	return {"success": True}

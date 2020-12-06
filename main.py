@@ -29,11 +29,12 @@ def create_app():
 	from routes.authentication.authenticate import auth_router
 	from routes.heartbeat import heartbeat
 	from routes.courses.course import course_router
+	from routes.scorm.scorm_conversion import convert_router
 	
 	app.include_router(auth_router, tags=['Authenticate'], prefix='/auth')
 	app.include_router(course_router, tags=['Course'], prefix='/courses')
 	app.include_router(heartbeat, tags=['Health'])
-	
+	app.include_router(convert_router, tags=['Scorm'], prefix='/scorm')
 	return app
 
 

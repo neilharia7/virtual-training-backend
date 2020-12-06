@@ -20,6 +20,9 @@ class Config(object):
 	USERNAME = "vtp_training"
 	PASSWORD = "15272b0ba39b474b8baeb7177f3e26bd"
 	MODES = ["employee", "mentor"]
+	
+	AWS_S3_REGION = "ap-south-1"
+	AWS_S3_BUCKET = "digitalfi"
 
 
 class DevConfig(Config):
