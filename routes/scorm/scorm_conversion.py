@@ -1,24 +1,18 @@
 import os
 
 from fastapi import APIRouter
-from fastapi import Depends, Response
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.security import HTTPBasic
 
 security = HTTPBasic()
 convert_router = APIRouter()
 
 
 @convert_router.post('/ppt-to-images')
-def convert_ppt_to_images(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
+def convert_ppt_to_images():
 	"""
-	
-	# TODO upload ppt
 	
 	:return:
 	"""
-	if not auth:
-		response = Response(headers={"WWW-Authenticate": "Basic"}, status_code=401)
-		return response
 	
 	# hardcoded for now
 	os.system(f'libreoffice --headless --convert-to pdf {os.getcwd()}/course_data/Clustering.pptx')
@@ -36,3 +30,5 @@ def convert_images_to_scorm():
 	"""
 	
 	os.system(f'ruby {os.getcwd()}/ppt_to_scorm_compliant.rb')
+	
+	return {"success": True}

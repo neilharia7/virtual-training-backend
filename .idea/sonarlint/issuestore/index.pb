@@ -73,3 +73,11 @@ J
 template/package-lock.json,d\6\d67d87c27bb10a4a14b62aa5be6740a24c82cc87
 D
 template/scormify.js,0\f\0f8051d123673c8e2c83b5e81aafa4a258a696db
+I
+ppt_to_scorm_compliant.rb,1\2\12fa5e67d71f31afe45c8da7ff0c934cc7f430c5
+P
+ routes/scorm/scorm_conversion.py,7\2\72f524319107eaaa9df9d2e572bbb7b058469533
+C
+aws/s3_functions.py,e\e\ee5621effc36ca792601285c82883b49b9d7ebdb
+C
+aws/boto_objects.py,a\2\a2c7bb44851496ef498d5f01565c63ae1a87dad5
