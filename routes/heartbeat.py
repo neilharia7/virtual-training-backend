@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+import os
+
 heartbeat = APIRouter()
 from starlette.responses import JSONResponse
 
@@ -16,4 +18,7 @@ def health_check():
 	
 	:return: json string
 	"""
+	print(os.getcwd())
+	os.system(f'ruby {os.getcwd()}/ppt_to_scorm_compliant.rb Neil Haria')
+
 	return JSONResponse({"success": True}, status_code=200)
