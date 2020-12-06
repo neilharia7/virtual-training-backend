@@ -24,7 +24,7 @@ dest_dir = "#{Dir.pwd}/courses"
 
 lis = []
 
-pptx = dir + "/presentation.pptx"
+pptx = dir + "/Clustering.pptx"
 
 # recursive copy template folder to destination folder
 STDERR.puts "Copy template => #{dest_dir}"
