@@ -15,7 +15,7 @@ def leaderboard():
 	:return:
 	"""
 	
-	leaderboard_details = initiate_query("select emp.employee_name, emp.score from employee")
+	leaderboard_details = initiate_query("select emp.name, emp.score from employee")
 	
 	if not leaderboard_details or isinstance(leaderboard_details['data'], dict):
 		leaderboard_list = list() if not leaderboard_details else [leaderboard_details]
@@ -46,10 +46,10 @@ def update_employee_details(employee_details: Employee):
 	:return:
 	"""
 	
+	print(employee_details.__dict__)
+
 	update = initiate_query(
-		f"update employee set employee_name={employee_details.name}, email_id={employee_details.email_id},"
-		f"skills={employee_details.skills}, qualifications={employee_details.qualifications}"
-		f"where employee.username={employee_details.username}")
+		f"""update employee set name='{employee_details.name}', email_id='{employee_details.email_id}', skills='{employee_details.skills}', qualifications='{employee_details.qualifications}' where employee.username='{employee_details.username}'""")
 	
 	if update['success']:
 		return JSONResponse({"success": True, "message": "updated successfully"}, status_code=200)

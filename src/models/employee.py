@@ -5,10 +5,11 @@ class Employee(BaseModel):
 	name: str
 	username: str
 	email_id: str = None
-	skills: list = None
-	qualifications: list = None
+	skills: str = None
+	qualifications: str = None
 	score: str = None
-	certificates: list = None
+	certificates: str = None
+	about_me: str = None
 	# active_status: bool = None
 	
 	#  if the user is present in the database

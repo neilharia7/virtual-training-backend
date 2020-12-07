@@ -38,7 +38,7 @@ def create_app():
 	app.include_router(heartbeat, tags=['Health'])
 	app.include_router(convert_router, tags=['Scorm'], prefix='/scorm')
 	app.include_router(mentor_router, tags=['Mentor'], prefix='/mentor')
-	app.include_router(employee_router, tags=['Emnployee'], prefix='/employee')
+	app.include_router(employee_router, tags=['Employee'], prefix='/employee')
 	
 	return app
 
