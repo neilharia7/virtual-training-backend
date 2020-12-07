@@ -15,7 +15,7 @@ def leaderboard():
 	:return:
 	"""
 	
-	leaderboard_details = initiate_query("select emp.name, emp.score from employee")
+	leaderboard_details = initiate_query("select name, score from employee")
 	
 	if not leaderboard_details or isinstance(leaderboard_details['data'], dict):
 		leaderboard_list = list() if not leaderboard_details else [leaderboard_details]
