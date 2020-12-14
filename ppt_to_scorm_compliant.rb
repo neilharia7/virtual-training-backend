@@ -12,7 +12,7 @@ description = ARGV[1]
 STDERR.puts "Course descriptiion => #{description}"
 
 # current dir
-dir = "#{Dir.pwd}/build"
+dir = "#{Dir.pwd}/course_data"
 puts dir
 
 begin

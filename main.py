@@ -15,7 +15,7 @@ def create_app():
 	app = FastAPI(
 		title="Virtual Training Platform",
 		description="""Industry focused courses where employees can track their progress,
-		have Q&A sessions with mentors and improve their skill-set. Mentors can track individual’s performance,
+		have Q&A sessions with mentors and improve their skill-set. Mentors can track individual's performance,
 		overall ranking and use the same to recommend respective project managers in the organization"""
 	)
 	app.add_middleware(
