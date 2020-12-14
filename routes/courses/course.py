@@ -1,4 +1,6 @@
 import json
+import os
+import shutil
 
 from fastapi import APIRouter, File, UploadFile
 from starlette.responses import JSONResponse
@@ -54,6 +56,7 @@ def get_courses():
 	
 	return course_details()
 
+
 @course_router.post('/upload')
 def upload_course(file: UploadFile = File(...)):
 	"""
@@ -64,11 +67,15 @@ def upload_course(file: UploadFile = File(...)):
 	print(f'filename {file.filename}')
 	upload_file_to_s3(file)
 	
-	return {"success": True}
-# =======
+	with open(f'{os.getcwd()}/course_data/{file.filename}', 'wb') as buffer:
+		shutil.copyfileobj(file.file, buffer)
 	
-# 	with open(f'{os.getcwd()}/.{file.filename.split(".")[-1]}', 'wb') as buffer:
-# 		shutil.copyfileobj(file.file, buffer)
+	return {"success": True, "file_name": file.filename}
+
+
+@course_router.put('/course/details')
+def insert_course_details():
+	"""
 	
-# 	return {"success": True}
-# >>>>>>> Stashed changes
+	:return:
+	"""

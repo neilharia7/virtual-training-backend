@@ -4,6 +4,8 @@ require 'mustache'
 require 'json'
 
 
+# Arguments => title, description, presentation
+
 title = ARGV[0]
 STDERR.puts "Course title => #{title}"
 description = ARGV[1]
@@ -24,7 +26,7 @@ dest_dir = "#{Dir.pwd}/courses"
 
 lis = []
 
-pptx = dir + "/Hypothesis_Testing.pptx"
+pptx = dir + "/#{ARGV[2]}.pptx"
 
 # recursive copy template folder to destination folder
 STDERR.puts "Copy template => #{dest_dir}"

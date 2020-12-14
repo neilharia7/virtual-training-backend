@@ -1,3 +1,5 @@
+import os
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -39,6 +41,11 @@ def create_app():
 	app.include_router(convert_router, tags=['Scorm'], prefix='/scorm')
 	app.include_router(mentor_router, tags=['Mentor'], prefix='/mentor')
 	app.include_router(employee_router, tags=['Employee'], prefix='/employee')
+	
+	try:
+		os.mkdir('course_data')
+	except FileExistsError:
+		pass
 	
 	return app
 
