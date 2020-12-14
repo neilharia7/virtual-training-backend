@@ -1,7 +1,7 @@
 import os
 
 HOST = os.getenv('APP_HOST', '0.0.0.0')
-PORT = os.getenv('APP_PORT', 8800)
+PORT = os.getenv('APP_PORT', 9001)
 PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
