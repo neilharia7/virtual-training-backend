@@ -14,7 +14,7 @@ class Config(object):
 	ALGORITHM = os.getenv('ALGORITHM', 'HS256')
 	ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_MINUTES', 43200)  # 30 days
 	API_DOCS_URL = True  # url => <domair>/docs/
-	ALLOW_ORIGIN = ['*']
+	ALLOW_ORIGIN = ["http://127.0.0.1:8080","http://localhost:8080", "https://uat.algo360.com:8800*"]
 	DATABASE_SERVER = "testserver.crhcifgoezvo.ap-south-1.rds.amazonaws.com"
 	DATABASE_NAME = "training_db"
 	USERNAME = "vtp_training"

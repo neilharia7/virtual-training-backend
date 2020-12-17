@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from starlette.responses import Response, JSONResponse
@@ -45,13 +45,15 @@ async def register(mode, details: Register):
 
 
 @auth_router.post("/login")
-def login(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
+def login(request: Request, auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
 	"""
 	
 	:param auth:
 	:return:
 	"""
 	
+	user_login_mode = "mentor"
+
 	if not auth:
 		response = Response(headers={"WWW-Authenticate": "Basic"}, status_code=401)
 		return response
@@ -59,23 +61,26 @@ def login(auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
 	try:
 		
 		username, password = auth.username, auth.password
+		print(f'username {username}\npassword {password}')
+		print(request.client)
 		user = authenticate_user(username, password, current_config.MODES[1])
 		
 		if not user:
 			user = authenticate_user(username, password, current_config.MODES[0])
-			
+			user_login_mode = "employee"
 			if not user:
 				raise HTTPException(status_code=400, detail="Incorrect email or password")
 		
 		user_details = user.__dict__
 		user_details['success'] = True
+		user_details['access_mode'] = user_login_mode
 		
 		response = JSONResponse(user_details, status_code=200)
 		response.set_cookie(
 			"Authorization",
 			value=f"Bearer {create_token(username=username)}",
-			# domain="localtest.me",
-			httponly=True,
+			# domain="uat.algo360.com",
+			httponly=False,
 			max_age=current_config.ACCESS_TOKEN_EXPIRE_MINUTES,
 			expires=current_config.ACCESS_TOKEN_EXPIRE_MINUTES,
 		)

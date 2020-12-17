@@ -2,7 +2,9 @@ import os
 
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.types import ASGIApp
 
 from config.settings import current_config, HOST, PORT
 
@@ -12,18 +14,20 @@ def create_app():
 	
 	:return:
 	"""
+	
+	# middlewares = [
+	# 	Middleware(CORSMiddleware, allow_origins=current_config.ALLOW_ORIGIN,
+	# 	    allow_credentials=True,
+	# 	    allow_methods=["*"],
+	# 	    allow_headers=["*"])
+	# ]
+	
 	app = FastAPI(
 		title="Virtual Training Platform",
 		description="""Industry focused courses where employees can track their progress,
 		have Q&A sessions with mentors and improve their skill-set. Mentors can track individual's performance,
 		overall ranking and use the same to recommend respective project managers in the organization"""
-	)
-	app.add_middleware(
-		CORSMiddleware,
-		allow_origins=current_config.ALLOW_ORIGIN,
-		allow_credentials=True,
-		allow_methods=['*'],
-		allow_headers=['*']
+		# middleware= middlewares
 	)
 	
 	app.debug = current_config.DEBUG
@@ -47,10 +51,18 @@ def create_app():
 	except FileExistsError:
 		pass
 	
+	app.add_middleware(
+		CORSMiddleware,
+		allow_origins=current_config.ALLOW_ORIGIN,
+		allow_credentials=True,
+		allow_methods=["*"],
+		allow_headers=["*"],
+	)	
+
 	return app
 
 
 application = create_app()
 
 if __name__ == "__main__":
-	uvicorn.run(application, host=HOST, port=PORT)
+	uvicorn.run(application, host=HOST, port=PORT, debug=True)
