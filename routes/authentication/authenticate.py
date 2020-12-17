@@ -48,12 +48,13 @@ async def register(mode, details: Register):
 def login(request: Request, auth: HTTPBasicCredentials = Depends(security, use_cache=True)):
 	"""
 	
+	:param request:
 	:param auth:
 	:return:
 	"""
 	
 	user_login_mode = "mentor"
-
+	
 	if not auth:
 		response = Response(headers={"WWW-Authenticate": "Basic"}, status_code=401)
 		return response

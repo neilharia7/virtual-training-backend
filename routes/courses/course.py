@@ -1,4 +1,3 @@
-import copy
 import json
 import os
 import shutil
@@ -67,13 +66,13 @@ def upload_course(file: UploadFile = File(...)):
 	
 	print(f'filename {file.filename}')
 	
-	temp_file = copy.deepcopy(file)
+	# temp_file = copy.deepcopy(file)
 	upload_file_to_s3(file)
 	
-	with open(f'{os.getcwd()}/course_data/{temp_file.filename}', 'wb') as buffer:
-		shutil.copyfileobj(temp_file.file, buffer)
+	with open(f'{os.getcwd()}/course_data/{file.filename}', 'wb') as buffer:
+		shutil.copyfileobj(file.file, buffer)
 	
-	return {"success": True, "file_name": temp_file.filename}
+	return {"success": True, "file_name": file.filename}
 
 
 @course_router.put('/course/details')

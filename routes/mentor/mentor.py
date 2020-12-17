@@ -55,3 +55,20 @@ def update_mentor_details(mentor_details: Mentor):
 		return JSONResponse({"success": True, "message": "updated successfully"}, status_code=200)
 	else:
 		return JSONResponse({"success": False, "message": "internal server error"}, status_code=500)
+
+
+@mentor_router.get('/{mentor_id}/courses')
+def get_courses_by_mentor(mentor_id: int):
+	"""
+	Get all courses created by the mentor
+	
+	:param mentor_id:
+	:return:
+	"""
+	
+	db_details = initiate_query(f"call get_course_details_by_mentor_id('{mentor_id}')")
+	
+	if not db_details['data'].get('course_id'):
+		return JSONResponse({"success": False, "message": "no course details found"}, status_code=404)
+	
+	return JSONResponse({"success": True, "course_details": db_details['data']}, status_code=200)
