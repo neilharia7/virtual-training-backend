@@ -1,4 +1,4 @@
-from aws.boto_objects import s3Client
+from aws.boto_objects import s3Client, s3Resource
 from config.settings import current_config
 
 
@@ -37,10 +37,15 @@ def get_s3_file_object(key: str):
 		return dict()
 
 
-def upload_file_to_s3(file):
-	path = 'courses/' + file.filename
-	# print(file.content_type)
-	print(file.file.read())
-	# s3Resource.Object(current_config.AWS_S3_BUCKET, path).put(Body=file.file.read(), ContentType=file.content_type)
+def upload_file_to_s3(file_path: str, file_data, content_type):
+	"""
 	
+	:param file_path:
+	:param file_data:
+	:param content_type:
+	:return:
+	"""
+	path = 'courses/' + file_path.split('/')[-1]  # get the filename
+	
+	s3Resource.Object(current_config.AWS_S3_BUCKET, path).put(Body=file_data, ContentType=content_type)
 	return path
