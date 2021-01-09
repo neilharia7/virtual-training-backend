@@ -24,7 +24,7 @@ media.each do |pair|
     nok.xpath("//img[@src='#{slide_png}']").each do |img|
       div = img.parent
       div['style'] = "background-image: url(#{slide_png}); background-repeat: no-repeat; background-size: cover;"
-      div.inner_html = "<iframe style=\"margin-top: 95px;\" width=\"650\" height=\"500\" src=\"https://www.youtube.com/embed/#{id}?modestbranding=1&autoplay=0&showinfo=0&controls=0\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+      div.inner_html = "<iframe style=\"margin-top: 95px;\" width=\"650\" height=\"500\" src=\"https://digitalfi.s3.ap-south-1.amazonaws.com/eys-hackathon/#{id}?modestbranding=1&autoplay=0&showinfo=0&controls=0\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
     end
   end
 end

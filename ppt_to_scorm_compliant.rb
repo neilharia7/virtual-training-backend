@@ -145,6 +145,3 @@ Zip::File.open(pptx) do |zip_file|
     # content = entry.get_input_stream.read
   end
 end
-
-
-

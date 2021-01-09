@@ -1,12 +1,14 @@
 import json
 import os
 import shutil
+from threading import Thread
 
 from fastapi import APIRouter, File, UploadFile
 from starlette.responses import JSONResponse
 
 from aws.s3_functions import upload_file_to_s3
 from db.database_utils import initiate_query
+from src.functions.course_builder import build_scorm_compatible_course
 from src.functions.utils import DatetimeEncoder
 from src.models.assignment import Assignment, AssignmentStatus
 from src.models.course import Course
@@ -82,12 +84,15 @@ def upload_course(data: Assignment, file: UploadFile = File(...)):
 		f"call insert_assignment_details('{data.assignment_name}', '{data.course_id}', '{data.assignment_description}', '{data.assignment_credits}', '{data.duration_hrs}')")
 	
 	assignment_details = initiate_query(f"call get_assignment_details('{data.assignment_name}', 0")
+	assignment_id = assignment_details['data'].get("assignment_id")
 	
-	asisgnment_id = assignment_details['data'].get("assignment_id")
+	_ = Thread(
+		target=build_scorm_compatible_course,
+		args=(assignment_id, file.filename, data.assignment_description)).start()
 	
-	return {
+	return JSONResponse({
 		"success": True, "file_name": file.filename, "assignment_name": data.assignment_name,
-		"assignment_id": asisgnment_id}
+		"assignment_id": assignment_id}, status_code=200)
 
 
 @course_router.put('/details')
@@ -111,7 +116,8 @@ def assignment_upload_status(data: AssignmentStatus):
 	:return:
 	"""
 	
-	assignment_details = initiate_query(f"call get_assignment_details('', {data.assignment_id})")
+	assignment_details = initiate_query(
+		f"call get_assignment_details('', {data.assignment_id})")
 	
 	if assignment_details['data']:
 		return JSONResponse(
