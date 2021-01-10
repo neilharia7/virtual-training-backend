@@ -100,10 +100,14 @@ def build_scorm_compatible_course(id_number: int, assignment_name: str, assignme
 	print(audio_file_dict)
 	with open(f'{file_path}/{id_number}_audio.json', 'w') as af:
 		af.write(json.dumps(audio_file_dict))
-
-	# os.system(f'ruby {os.getcwd()}/ppt_to_scorm_compliant.rb {assignment_name} {assignment_description} {course_name}')
+		
 	os.system(f"aws s3 cp {os.getcwd()}/courses/ s3://{current_config.AWS_S3_BUCKET}/courses/{course_name}/ --recursive")
+
+	# make items publicily accessible
+	os.system(f"aws s3api put-object-acl --bucket {current_config.AWS_S3_BUCKET} --key courses/ --acl public-read")
+
+	scorm_link = f"{current_config.S3_LINK}/{course_name}/index.html"
 	
-	# TODO add to s3 and update table
-	
+	# TODO delete redundant files
+	initial_query(f"call update_assignment_details({id_number}, '{scorm_link}')")
 	print("done!")

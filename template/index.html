@@ -18,6 +18,11 @@
 </head>
 <body>
     <div id="content">
+          <audio controls autoplay="true" id="scorm_audio">
+                      <!--<source src="horse.ogg" type="audio/ogg"> -->
+            <source type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
         {{{slides}}}
     </div>
     <script src="js/jquery-1.9.1.min.js"></script>
@@ -42,20 +47,89 @@
       }
     }
 
-    $(document).ready(function(){
-      preloadImages({{{images}}}, function(){
+    function getAudioFiles(){
+        var music_player = document.querySelector("#content audio");
+
+        var audios = [];
+
+        $.ajax({
+            url: 'https://uat.algo360.com:8800/course/audio/details/'+{{{assignment_id}}},
+            type: 'GET',
+            // dataType: 'json',
+            contentType: 'application/json',
+            // headers: {
+            //      "Authorization": "Basic "+window.btoa(email + ':' + password),
+            // },
+            // data : JSON.stringify({
+            //      // "username": name,
+            //      "password": password,
+            //      // "name": name,
+            //      "email": email
+            // }),
+            
+            success: function (result) {
+
+                console.log(result)
+                music_player.src = result.complete_audio;
+                // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
+                music_player.autoplay = true
+
+                audios = result.metadata;
+
+                // alert("Success")
+
+            },
+            error: function (error) {
+
+                console.log(error);
+                // alert("error")
+                // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
+                music_player.autoplay = true;
+
+                if(error.status === 406)
+                {
+                    alert(error.responseJSON.message);
+                }
+            }
+        });
+
+        return audios;
+    }
+
+
+
+    $(document).ready(function() {
+
+      preloadImages( {{{images}}} , function(){
         console.log('All images were loaded');
         $('#third').zenith({
               layout: 'slider',
               width: '100%',
               height: '600px',
-              autoplay: false,
-              autoplaySpeed: 9929399,
+              autoplay: true,
+              autoplaySpeed: 2000,
               slideSpeed: 600,
               style: 'shadow',
               customNavs: ['#tf_thumbs', '.tf_thumb'],
               navPosition: 'right',
-              direction: 'vertical'
+              direction: 'vertical',
+              data : getAudioFiles(),
+              firstSlide: function(){
+                console.log("first slide");
+              },
+              lastSlide: function(){
+                console.log("last slide");
+              },
+              nextSlide: function(){
+                console.log("next slide")
+                // setTimeout(function() {
+                //     $('#change').click();
+                //   }, 1000)
+
+              },
+              prevSlide: function(){
+                console.log("prev slide")
+              },
         });
         });
       });

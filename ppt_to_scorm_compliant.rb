@@ -27,7 +27,7 @@ dest_dir = "#{Dir.pwd}/courses"
 lis = []
 
 pptx = dir + "/#{ARGV[2]}.pptx"
-
+assignment_id = ARGV[3]
 # recursive copy template folder to destination folder
 STDERR.puts "Copy template => #{dest_dir}"
 FileUtils.cp_r "template", dest_dir
@@ -83,7 +83,7 @@ puts list
 template_file = "#{dest_dir}/index.html"
 template = File.read template_file
 STDERR.puts "Writing template file: #{template_file}"
-template_out = Mustache.render(template, title: title, description: description, slides: list, images: images)
+template_out = Mustache.render(template, title: title, description: description, slides: list, images: images, assignment_id: assignment_id)
 File.open(template_file, "w") do |f|
   f.write template_out
 end
