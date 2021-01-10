@@ -10,7 +10,7 @@ from aws.s3_functions import upload_file_to_s3
 from db.database_utils import initiate_query
 from src.functions.course_builder import build_scorm_compatible_course
 from src.functions.utils import DatetimeEncoder
-from src.models.assignment import Assignment, AssignmentStatus
+from src.models.assignment import AssignmentStatus
 from src.models.course import Course
 
 course_router = APIRouter()
@@ -62,10 +62,15 @@ def get_courses():
 
 
 @course_router.post('/assignment/upload')
-def upload_course(data: Assignment, file: UploadFile = File(...)):
+def upload_course(assignment_name: str, course_id: int, assignment_description: str, assignment_credits: int,
+                  duration_hrs: int, file: UploadFile = File(...)):
 	"""
 	
-	:param data:
+	:param assignment_name:
+	:param course_id:
+	:param assignment_description:
+	:param assignment_credits:
+	:param duration_hrs:
 	:param file:
 	:return:
 	"""
@@ -81,17 +86,17 @@ def upload_course(data: Assignment, file: UploadFile = File(...)):
 		upload_file_to_s3(file_path, file_data.read(), content_type)
 	
 	initiate_query(
-		f"call insert_assignment_details('{data.assignment_name}', '{data.course_id}', '{data.assignment_description}', '{data.assignment_credits}', '{data.duration_hrs}')")
+		f"""call insert_assignment_details('{assignment_name}', '{course_id}', '{assignment_description}', '{assignment_credits}', '{duration_hrs}')""")
 	
-	assignment_details = initiate_query(f"call get_assignment_details('{data.assignment_name}', 0")
+	assignment_details = initiate_query(f"""call get_assignment_details('{assignment_name}', 0)""")
 	assignment_id = assignment_details['data'].get("assignment_id")
 	
 	_ = Thread(
 		target=build_scorm_compatible_course,
-		args=(assignment_id, file.filename, data.assignment_description)).start()
+		args=(assignment_id, file.filename, assignment_description)).start()
 	
 	return JSONResponse({
-		"success": True, "file_name": file.filename, "assignment_name": data.assignment_name,
+		"success": True, "file_name": file.filename, "assignment_name": assignment_name,
 		"assignment_id": assignment_id}, status_code=200)
 
 
