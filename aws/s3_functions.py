@@ -49,3 +49,14 @@ def upload_file_to_s3(file_path: str, file_data, content_type):
 	
 	s3Resource.Object(current_config.AWS_S3_BUCKET, path).put(Body=file_data, ContentType=content_type)
 	return path
+
+
+def upload_audio_s3(retrieve_file_path: str, link_path: str):
+	"""
+	
+	:param retrieve_file_path:
+	:param link_path:
+	:return:
+	"""
+	
+	s3Client.upload_file(retrieve_file_path, current_config.AWS_S3_BUCKET, link_path)

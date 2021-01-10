@@ -24,6 +24,8 @@ class Config(object):
 	AWS_S3_REGION = "ap-south-1"
 	AWS_S3_BUCKET = "digitalfi"
 	OCR_URL = "https://api.ocr.space/parse/image"
+	
+	S3_LINK = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/"
 
 
 class DevConfig(Config):
