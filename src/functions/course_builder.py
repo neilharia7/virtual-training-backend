@@ -60,7 +60,7 @@ def build_scorm_compatible_course(id_number: int, assignment_name: str, assignme
 			
 			counter += round(int(info_length))
 	
-	with open(f'{file_path}/course_data/{course_name}_audio.txt', 'wb') as af:
+	with open(f'{file_path}/course_data/{id_number}_audio.txt', 'w') as af:
 		af.write(str(audio_file_list))
 	
 	os.system(f'ruby {os.getcwd()}/ppt_to_scorm_compliant.rb {assignment_name} {assignment_description} {course_name}')

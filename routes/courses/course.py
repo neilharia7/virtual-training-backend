@@ -131,3 +131,23 @@ def assignment_upload_status(data: AssignmentStatus):
 	
 	else:
 		return JSONResponse({"success": False, "message": "assignment id not found"}, status_code=404)
+
+
+@course_router.get('/audio/details/{audio_id}')
+def get_audio_details(audio_id):
+	"""
+	
+	:param audio_id:
+	:return:
+	"""
+	
+	try:
+		
+		with open(f'{os.getcwd()}/course_data/{audio_id}_audio.txt', 'r') as af:
+			data = af.read()
+		
+		return JSONResponse({"success": True, "audio_details": data}, status_code=200)
+	except Exception as e:
+		print(f"error >> {e}")
+		
+		return JSONResponse({"success": False, "message": "audio file not found"}, status_code=404)
