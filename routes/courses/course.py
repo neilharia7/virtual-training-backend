@@ -142,8 +142,7 @@ def get_audio_details(audio_id):
 	"""
 	
 	try:
-		
-		with open(f'{os.getcwd()}/course_data/{audio_id}_audio.txt', 'r') as af:
+		with open(f'{os.getcwd()}/course_data/{audio_id}_audio.json', 'r') as af:
 			data = af.read()
 		
 		return JSONResponse({"success": True, "audio_details": data}, status_code=200)
