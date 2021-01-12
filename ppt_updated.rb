@@ -11,6 +11,7 @@ STDERR.puts "Course title => #{title}"
 
 # course description is not been added to scorm
 description = ARGV[0]
+audio = ARGV[2]
 STDERR.puts "Course descriptiion => #{description}"
 
 # current dir
@@ -55,11 +56,11 @@ ordered.each do |name|
                     <img data-caption="Caption" src="img/#{name}" alt="#{name}" />
                 </div>
 SLIDE
-  thumb =<<THUMB;
-                    <div class="tf_thumb"><img src="img/#{name}"/></div>
-THUMB
+#   thumb =<<THUMB;
+#                     <div class="tf_thumb"><img src="img/#{name}"/></div>
+# THUMB
   slides.push slide
-  thumbs.push thumb
+  # thumbs.push thumb
 end
 
 puts images.to_json
@@ -85,7 +86,7 @@ puts list
 template_file = "#{dest_dir}/index.html"
 template = File.read template_file
 STDERR.puts "Writing template file: #{template_file}"
-template_out = Mustache.render(template, title: title, description: description, slides: list, images: images, assignment_id: assignment_id)
+template_out = Mustache.render(template, title: title, description: description, slides: list, images: images, assignment_id: assignment_id, audio: audio)
 File.open(template_file, "w") do |f|
   f.write template_out
 end

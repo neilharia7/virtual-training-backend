@@ -25,9 +25,13 @@ def create_app():
 		description="""Industry focused courses where employees can track their progress,
 		have Q&A sessions with mentors and improve their skill-set. Mentors can track individual's performance,
 		overall ranking and use the same to recommend respective project managers in the organization"""
-		# middleware= middlewares
 	)
 	
+	# app.add_middleware(CORSMiddleware, allow_origins=current_config.ALLOW_ORIGIN,
+	# 	    allow_credentials=True,
+	# 	    allow_methods=["*"],
+	# 	    allow_headers=["*"])
+
 	app.debug = current_config.DEBUG
 	
 	from routes.authentication.authenticate import auth_router

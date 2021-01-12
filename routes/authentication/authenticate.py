@@ -75,6 +75,7 @@ def login(request: Request, auth: HTTPBasicCredentials = Depends(security, use_c
 		user_details = user.__dict__
 		user_details['success'] = True
 		user_details['access_mode'] = user_login_mode
+		user_details['id'] = user_details.get('mentor_id') if user_details.get('mentor_id') else user_details.get('employee_id')
 		
 		response = JSONResponse(user_details, status_code=200)
 		response.set_cookie(

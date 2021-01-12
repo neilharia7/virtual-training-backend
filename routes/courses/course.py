@@ -3,7 +3,7 @@ import os
 import shutil
 from threading import Thread
 
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile, Form
 from starlette.responses import JSONResponse
 
 from aws.s3_functions import upload_file_to_s3
@@ -62,8 +62,8 @@ def get_courses():
 
 
 @course_router.post('/assignment/upload')
-def upload_course(assignment_name: str, course_id: int, assignment_description: str, assignment_credits: int,
-                  duration_hrs: int, file: UploadFile = File(...)):
+def upload_course(assignment_name: str = Form(...), course_id: int = Form(...), assignment_description: str = Form(...),
+                  assignment_credits: int = Form(...), duration_hrs: int = Form(...), file: UploadFile = File(...)):
 	"""
 	
 	:param assignment_name:
@@ -114,19 +114,19 @@ def insert_course_details(data: Course):
 	return {"success": True}
 
 
-@course_router.get('/assignment/upload/status')
-def assignment_upload_status(data: AssignmentStatus):
+@course_router.get('/assignment/upload/status/{assignment_id}')
+def assignment_upload_status(assignment_id: int):
 	"""
 	
 	:return:
 	"""
 	
 	assignment_details = initiate_query(
-		f"call get_assignment_details('', {data.assignment_id})")
+		f"call get_assignment_details('', {int(assignment_id)})")
 	
 	if assignment_details['data']:
 		return JSONResponse(
-			{"Success": True, "status": assignment_details['data'].get('upload_status')},
+			{"success": True, "status": assignment_details['data'].get('upload_status')},
 			status_code=200)
 	
 	else:

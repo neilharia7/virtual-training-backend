@@ -52,46 +52,80 @@
 
         var audios = [];
 
-        $.ajax({
-            url: 'https://uat.algo360.com:8800/course/audio/details/'+{{{assignment_id}}},
-            type: 'GET',
-            // dataType: 'json',
-            contentType: 'application/json',
-            // headers: {
-            //      "Authorization": "Basic "+window.btoa(email + ':' + password),
-            // },
-            // data : JSON.stringify({
-            //      // "username": name,
-            //      "password": password,
-            //      // "name": name,
-            //      "email": email
-            // }),
+        var request = {
+          'cache': false,
+          'dataType': "jsonp",
+          "async": true,
+          "crossDomain": true,
+          "url": "https://uat.algo360.com:8800/course/audio/details/" + {{{assignment_id}}},
+          "method": "GET",
+          "headers": {
+              "accept": "application/json",
+              "Access-Control-Allow-Origin":"*"
+          }
+        }
+
+        $.ajax(request).done(function(result) {
+          console.log("working!")
+          console.log(result)
+          music_player.src = result.complete_audio;
+          // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
+          music_player.autoplay = true
+
+          audios = result.metadata;
+        }).fail(function (error) {
+          console.log(error);
+          // alert("error")
+          // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
+          music_player.autoplay = true;
+
+          if(error.status === 406)
+          {
+              alert(error.responseJSON.message);
+          }
+        })
+
+
+        // $.ajax({
+        //     url: 'https://uat.algo360.com:8800/course/audio/details/'+{{{assignment_id}}},
+        //     type: 'GET',
+        //     // dataType: 'json',
+        //     contentType: "text/plain",
+        //     // headers: {
+        //     //      "Authorization": "Basic "+window.btoa(email + ':' + password),
+        //     // },
+        //     // data : JSON.stringify({
+        //     //      // "username": name,
+        //     //      "password": password,
+        //     //      // "name": name,
+        //     //      "email": email
+        //     // }),
             
-            success: function (result) {
+        //     success: function (result) {
 
-                console.log(result)
-                music_player.src = result.complete_audio;
-                // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
-                music_player.autoplay = true
+        //         console.log(result)
+        //         music_player.src = result.complete_audio;
+        //         // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
+        //         music_player.autoplay = true
 
-                audios = result.metadata;
+        //         audios = result.metadata;
 
-                // alert("Success")
+        //         // alert("Success")
 
-            },
-            error: function (error) {
+        //     },
+        //     error: function (error) {
 
-                console.log(error);
-                // alert("error")
-                // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
-                music_player.autoplay = true;
+        //         console.log(error);
+        //         // alert("error")
+        //         // music_player.src = "https://digitalfi.s3.ap-south-1.amazonaws.com/courses/clustering/B2b_Hub2.mp3"
+        //         music_player.autoplay = true;
 
-                if(error.status === 406)
-                {
-                    alert(error.responseJSON.message);
-                }
-            }
-        });
+        //         if(error.status === 406)
+        //         {
+        //             alert(error.responseJSON.message);
+        //         }
+        //     }
+        // });
 
         return audios;
     }
@@ -105,9 +139,9 @@
         $('#third').zenith({
               layout: 'slider',
               width: '100%',
-              height: '600px',
+              height: '500px',
               autoplay: true,
-              autoplaySpeed: 2000,
+              autoplaySpeed: 10000,
               slideSpeed: 600,
               style: 'shadow',
               customNavs: ['#tf_thumbs', '.tf_thumb'],
