@@ -2,7 +2,7 @@ import os
 
 import uvicorn
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
 from config.settings import current_config, HOST, PORT
 
@@ -27,10 +27,10 @@ def create_app():
 		overall ranking and use the same to recommend respective project managers in the organization"""
 	)
 	
-	# app.add_middleware(CORSMiddleware, allow_origins=current_config.ALLOW_ORIGIN,
-	# 	    allow_credentials=True,
-	# 	    allow_methods=["*"],
-	# 	    allow_headers=["*"])
+	app.add_middleware(CORSMiddleware, allow_origins=current_config.ALLOW_ORIGIN,
+		    allow_credentials=True,
+		    allow_methods=["*"],
+		    allow_headers=["*"])
 
 	app.debug = current_config.DEBUG
 	
